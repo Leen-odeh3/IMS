@@ -1,0 +1,9 @@
+﻿
+namespace IMS.Core.Exceptions;
+public class BadRequestException : Exception
+{
+    BadRequestException(string message)
+        : base(message)
+    {
+    }
+}

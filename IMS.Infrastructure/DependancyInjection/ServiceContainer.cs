@@ -5,6 +5,7 @@ using IMS.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using IMS.Infrastructure.DbInitilizer;
 
 namespace IMS.Infrastructure.ServiceContainer;
 public static class ServiceContainer
@@ -19,6 +20,7 @@ public static class ServiceContainer
         services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<AppDbContext>()
         .AddDefaultTokenProviders();
 
+        services.AddScoped<IDBInitilizer, DBInitilizer>();
 
 
         return services;
