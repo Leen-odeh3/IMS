@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   ims.api:
     build:
@@ -6,10 +8,15 @@ services:
     ports:
       - "5000:8080"
     depends_on:
-      sqlserver:
-        condition: service_started
+      - sqlserver
     environment:
       ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: >
+        Server=sqlserver,1433;
+        Database=IMS_DB;
+        User Id=sa;
+        Password=Strong@123;
+        TrustServerCertificate=True;
 
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest

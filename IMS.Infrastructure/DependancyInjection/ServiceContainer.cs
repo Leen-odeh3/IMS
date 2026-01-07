@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace IMS.Infrastructure.ServiceContainer;
 public static class ServiceContainer
@@ -34,6 +35,13 @@ public static class ServiceContainer
         })
         .AddDefaultTokenProviders().AddEntityFrameworkStores<AppDbContext>();
         ;
+
+        services.AddHealthChecks()
+    .AddSqlServer(
+        configuration.GetConnectionString("DefaultConnection"),
+        tags: new[] { "db", "ready" }
+    );
+
         return services;
     }
 }
