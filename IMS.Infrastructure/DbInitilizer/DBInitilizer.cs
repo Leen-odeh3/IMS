@@ -51,14 +51,20 @@ public class DBInitilizer : IDBInitilizer
         var existingUser = await _userManager.FindByNameAsync("super.admin");
 
         if (existingUser is not null)
-            return; 
+            return;
 
         var user = new AppUser
         {
             UserName = "super.admin",
+            NormalizedUserName = "SUPER.ADMIN",
             Email = "superAdmin@company.com",
+            NormalizedEmail = "SUPERADMIN@COMPANY.COM",
             FirstName = "Super",
             LastName = "Admin",
+            ProfilePictureUrl = "default.png",
+            specialization = "System",
+            university = "Internal",
+            IsActive = true,
             EmailConfirmed = true
         };
 

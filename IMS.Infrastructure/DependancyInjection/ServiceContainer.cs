@@ -37,6 +37,7 @@ public static class ServiceContainer
         ;
 
         services.AddHealthChecks()
+    .AddCheck("self", () => HealthCheckResult.Healthy())
     .AddSqlServer(
         configuration.GetConnectionString("DefaultConnection"),
         tags: new[] { "db", "ready" }
