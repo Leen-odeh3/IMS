@@ -25,14 +25,9 @@
     <PackageReference Include="Serilog.AspNetCore" />
     <PackageReference Include="Serilog.Sinks.Console" />
     <PackageReference Include="Serilog.Sinks.File" />
-    <PackageReference Include="SourceFlow.Stores.EntityFramework" />
     <PackageReference Include="Swashbuckle.AspNetCore" />
 	  <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" />
 	  <PackageReference Include="AspNetCore.HealthChecks.SqlServer" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Middleware\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -4,5 +4,10 @@ using IMS.Core.Entities;
 namespace IMS.Application.Abstractions;
 public interface IAuthService
 {
-    Task<UserResponse> AddNewUserAsync(AppUserRequest user);
+    Task<AppUser> AddNewUserAsync(
+        AppUser user,
+        string password,
+        string role,
+        Trainer? trainer,
+        Trainee? trainee);
 }

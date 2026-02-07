@@ -6,5 +6,5 @@ public class Trainer
 {
     public AppUser User { get; set; }
     public int Id { get; set; }
-    public string YearsOfExperience { get; set; }
+    public int YearsOfExperience { get; set; }
 }

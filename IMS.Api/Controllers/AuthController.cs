@@ -1,8 +1,7 @@
 ﻿using IMS.Application.Abstractions;
-using IMS.Application.DI;
 using IMS.Application.DTOs.Users;
-using IMS.Infrastructure.DependancyInjection;
-using Microsoft.AspNetCore.Http;
+using IMS.Application.Mapper;
+using IMS.Core.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IMS.Api.Controllers;
@@ -12,25 +11,45 @@ namespace IMS.Api.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
-    public AuthController(IAuthService authService)
+    private readonly UserMapper _mapper;
+
+    public AuthController(IAuthService authService, UserMapper mapper)
     {
         _authService = authService; 
+        _mapper = mapper;
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] AppUserRequest userRequest)
+    public async Task<IActionResult> Register(RegisterUserDto dto)
     {
-        using var activity =
-            Observability.ActivitySource.StartActivity("Register User");
+        var appUser = _mapper.MapToAppUser(dto);
 
-        activity?.SetTag("user.email", userRequest.Email);
-        activity?.SetTag("user.role", userRequest.Role);
+        Trainer? trainer = null;
+        Trainee? trainee = null;
 
-        var result = await _authService.AddNewUserAsync(userRequest);
+        if (dto.Role == "Trainer")
+        {
+            trainer = _mapper.MapToTrainer(dto);
+            trainer.User = appUser;
+        }
 
-        activity?.SetTag("user.id", result.UserId);
+        if (dto.Role == "Trainee")
+        {
+            trainee = _mapper.MapToTrainee(dto);
+            trainee.User = appUser;
+        }
 
-        return CreatedAtAction(nameof(Register),
-            new { id = result.UserId }, result);
+        var user = await _authService.AddNewUserAsync(
+            appUser,
+            dto.Password,
+            dto.Role,
+            trainer,
+            trainee);
+
+        var response = _mapper.MapToResponse(user);
+
+        response.Role = dto.Role;
+
+        return Ok(response);
     }
 }

@@ -3,7 +3,7 @@ using IMS.Application.DTOs.Users;
 
 namespace IMS.Application.Validations;
 public class AppUserValidator
-    : AbstractValidator<AppUserRequest>
+    : AbstractValidator<RegisterUserDto>
 {
     public AppUserValidator()
     {

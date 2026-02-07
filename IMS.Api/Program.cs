@@ -1,4 +1,5 @@
 using IMS.Api.DI;
+using IMS.Api.Middleware;
 using IMS.Application.DI;
 using IMS.Infrastructure.DependancyInjection;
 using IMS.Infrastructure.ServiceContainer;
@@ -16,11 +17,25 @@ builder.Services
     .AddApplicationDependancy();
 builder.Services.AddObservability(builder.Configuration);
 
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
 app.UseObservability();
 app.MapMetrics();
 app.MapHealthChecks();
 
+app.UseMiddleware<ExceptionMiddleware>();
+app.UseCors("AllowAll");
 await app.InitializeDatabaseAsync();
 
 if (app.Environment.IsDevelopment())

@@ -14,18 +14,28 @@ public class UnitOfWork : IUnitOfWork
         _context = context;
     }
 
-    public async Task BeginTransactionAsync()
+    public async Task<T> ExecuteInTransactionAsync<T>(Func<Task<T>> action)
     {
-        _transaction = await _context.Database.BeginTransactionAsync();
-    }
+        try
+        {
+            if (_context.Database.CurrentTransaction != null)
+            {
+                return await action();
+            }
 
-    public async Task CommitAsync()
-    {
-        await _transaction!.CommitAsync();
-    }
+            await using var transaction =
+                await _context.Database.BeginTransactionAsync();
 
-    public async Task RollbackAsync()
-    {
-        await _transaction!.RollbackAsync();
+            var result = await action();
+
+            await transaction.CommitAsync();
+
+            return result;
+        }
+        catch
+        {
+            await _context.Database.RollbackTransactionAsync();
+            throw;
+        }
     }
 }

@@ -26,11 +26,15 @@ public class DBInitilizer : IDBInitilizer
             if ((await _context.Database.GetPendingMigrationsAsync()).Any())
                 await _context.Database.MigrateAsync();
         }
-        catch
+        catch (Exception ex)
         {
-            throw new Core.Exceptions.InvalidOperationException(
-                ErrorMessages.MigrationFailed);
+            Console.WriteLine("========== MIGRATION ERROR ==========");
+            Console.WriteLine(ex.ToString());
+            Console.WriteLine("=====================================");
+
+            throw;
         }
+
 
         string[] roles =
         {
