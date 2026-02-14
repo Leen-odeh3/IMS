@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IMS.Core.Entities;
 
@@ -12,5 +13,7 @@ public class AppUser : IdentityUser<int>
     public string? University { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;  
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;  
-    public DateTime LastLoginAt { get; set; } = DateTime.UtcNow;    
+    public DateTime LastLoginAt { get; set; } = DateTime.UtcNow;
+    [NotMapped]
+    public string? Role { get; set; }
 }

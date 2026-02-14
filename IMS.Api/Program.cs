@@ -8,41 +8,28 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 builder.Services
+    .AddJwtAuthentication(builder.Configuration)
     .addInfraDependancy(builder.Configuration)
-    .AddApplicationDependancy();
-builder.Services.AddObservability(builder.Configuration);
+    .AddApplicationDependancy(builder.Configuration)
+    .AddSwaggerDocumentation()
+    .AddCorsPolicy()
+    .AddObservability(builder.Configuration);
 
-
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll",
-        policy =>
-        {
-            policy.AllowAnyOrigin()
-                  .AllowAnyHeader()
-                  .AllowAnyMethod();
-        });
-});
 
 var app = builder.Build();
-app.UseObservability();
-app.MapMetrics();
-app.MapHealthChecks();
-
-app.UseMiddleware<ExceptionMiddleware>();
-app.UseCors("AllowAll");
 await app.InitializeDatabaseAsync();
+app.UseMiddleware<ExceptionMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerDocumentation();
 }
-
+app.UseObservability();
+app.MapMetrics();
+app.MapHealthChecks();
+app.UseCors();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-
 app.Run();

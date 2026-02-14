@@ -13,6 +13,7 @@
   <ItemGroup>
     <PackageReference Include="FluentValidation.AspNetCore" />
 	  <PackageReference Include="Riok.Mapperly" />
+	  <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
   </ItemGroup>
 
 </Project>
