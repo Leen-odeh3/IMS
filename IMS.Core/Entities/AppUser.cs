@@ -14,6 +14,4 @@ public class AppUser : IdentityUser<int>
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;  
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;  
     public DateTime LastLoginAt { get; set; } = DateTime.UtcNow;
-    [NotMapped]
-    public string? Role { get; set; }
 }

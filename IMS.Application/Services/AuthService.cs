@@ -69,7 +69,7 @@ public class AuthService : IAuthService
         });
     }
 
-    public async Task<LoginResponseDto> LoginAsync(LoginUserDto dto)
+     public async Task<LoginResponseDto> LoginAsync(LoginUserDto dto)
     {
         var user = await _userManager.FindByEmailAsync(dto.Email);
 
@@ -85,12 +85,14 @@ public class AuthService : IAuthService
 
         var token = await _tokenService.GenerateTokenAsync(user);
         var roles = await _userManager.GetRolesAsync(user);
-        user.Role = roles.FirstOrDefault();
+
+        var response = _mapper.MapToResponse(user);
+        response.Role = roles.FirstOrDefault();
 
         return new LoginResponseDto
         {
             Token = token,
-            User = _mapper.MapToResponse(user)
+            User = response
         };
     }
 }
