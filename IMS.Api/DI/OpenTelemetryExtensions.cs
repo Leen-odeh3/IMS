@@ -28,22 +28,22 @@ public static class OpenTelemetryExtensions
                     });
             });
 
-        services.AddLogging(logging =>
-        {
-            logging.AddOpenTelemetry(options =>
-            {
-                options.SetResourceBuilder(resource);
+        //services.AddLogging(logging =>
+        //{
+        //    logging.AddOpenTelemetry(options =>
+        //    {
+        //        options.SetResourceBuilder(resource);
 
-                options.IncludeFormattedMessage = true;
-                options.IncludeScopes = true;
-                options.ParseStateValues = true;
+        //        options.IncludeFormattedMessage = true;
+        //        options.IncludeScopes = true;
+        //        options.ParseStateValues = true;
 
-                options.AddOtlpExporter(o =>
-                {
-                    o.Endpoint = otlpEndpoint;
-                });
-            });
-        });
+        //        options.AddOtlpExporter(o =>
+        //        {
+        //            o.Endpoint = otlpEndpoint;
+        //        });
+        //    });
+        //});
 
         return services;
     }

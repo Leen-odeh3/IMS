@@ -1,7 +1,8 @@
-﻿using IMS.Application.DTOs.Users;
+﻿using IMS.Application.Common;
+using IMS.Application.DTOs.Users;
 namespace IMS.Application.Abstractions;
 public interface IAuthService
 {
-    Task<UserResponse> RegisterAsync(RegisterUserDto dto);
-    Task<LoginResponseDto> LoginAsync(LoginUserDto dto);
+    Task<Result<UserResponse>> RegisterAsync(RegisterUserDto dto);
+    Task<Result<LoginResponseDto>> LoginAsync(LoginUserDto dto);
 }

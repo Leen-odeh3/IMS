@@ -2,7 +2,6 @@
 using IMS.Application.Helper;
 using IMS.Core.Entities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -51,7 +50,6 @@ public class TokenService : ITokenService
             expires: DateTime.UtcNow.AddHours(_jwtOptions.ExpiryInHours),
             signingCredentials: creds
         );
-
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
